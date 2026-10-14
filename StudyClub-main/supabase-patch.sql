@@ -110,3 +110,30 @@ CREATE POLICY "pomodoro_all" ON public.pomodoro_sessions
 
 -- ── Enable realtime for calendar ──
 ALTER PUBLICATION supabase_realtime ADD TABLE public.calendar_events;
+
+-- ── Admin Roles & Unique Username Schema ──
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS username TEXT UNIQUE;
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS role TEXT DEFAULT 'student' CHECK (role IN ('student', 'admin'));
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS department TEXT;
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'active' CHECK (status IN ('active', 'suspended'));
+
+-- ── Announcements Table ──
+CREATE TABLE IF NOT EXISTS public.announcements (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  title TEXT NOT NULL,
+  message TEXT NOT NULL,
+  type TEXT DEFAULT 'info' CHECK (type IN ('info', 'warning', 'success')),
+  active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.announcements ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "announcements_read_all" ON public.announcements
+  FOR SELECT USING (TRUE);
+
+CREATE POLICY "announcements_admin_manage" ON public.announcements
+  FOR ALL USING (
+    EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role = 'admin')
+  );
+

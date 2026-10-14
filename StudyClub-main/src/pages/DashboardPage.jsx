@@ -15,7 +15,8 @@ import {
   Calendar,
   Volume2,
   CheckSquare,
-  Award
+  Award,
+  ShieldCheck
 } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { usePomodoro } from '../contexts/PomodoroContext'
@@ -85,6 +86,43 @@ export default function DashboardPage() {
 
   return (
     <div style={{ display: 'grid', gap: '1.75rem' }}>
+      {/* ── ADMIN CALLOUT BANNER ── */}
+      {user?.role === 'admin' && (
+        <div
+          className="card"
+          style={{
+            padding: '1rem 1.5rem',
+            background: 'linear-gradient(135deg, rgba(255, 77, 77, 0.1) 0%, rgba(232, 82, 26, 0.08) 100%)',
+            border: '1px solid rgba(255, 77, 77, 0.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: 12
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ width: 38, height: 38, borderRadius: 10, background: '#FF4D4D', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <ShieldCheck size={22} />
+            </div>
+            <div>
+              <div style={{ fontWeight: 800, fontSize: '0.95rem' }}>Administrator Console Active</div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                Logged in with unique handle <strong>@{user?.username || 'admin'}</strong>. Manage users, clubs, announcements, and system logs.
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => navigate('/admin')}
+            className="btn btn-primary"
+            style={{ background: '#FF4D4D', fontSize: '0.85rem', padding: '8px 16px' }}
+          >
+            Launch Admin Portal <ArrowRight size={15} />
+          </button>
+        </div>
+      )}
+
       {/* ── HERO BANNER ── */}
       <div className="card" style={{
         padding: '2rem',

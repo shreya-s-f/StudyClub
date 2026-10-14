@@ -16,13 +16,22 @@ StudyClub addresses this problem by bringing essential study and productivity fe
 
 ## ✨ Key Features
 
-### 🔐 1. User Authentication
+### 🔐 1. User Authentication & Administrator Portal
 
-- Create an account using your name, email, password, and academic details.
-- Sign in to access the application.
-- Maintain a user session.
-- Protect selected pages from unauthorized access.
-- Sign out when finished.
+- **Dual Portals**: Dedicated access flows for Students and Platform Administrators.
+- **Unique Username Security**: System requires a unique, verified username (e.g., `@admin_boss`, `@alex_r`) with live collision checking.
+- **Admin Verification**: Privileged administrator signup enforces security passcode verification (`ADMIN2026`).
+- **Secure Password Enforcement**: Password length checks and matching confirmation with show/hide controls.
+- **Pre-configured Demo Accounts**: Instant sign-in with `@superadmin` (password: `admin123`) or `@alex_r` (password: `password123`).
+- **Protected Routes & Role Guards**: Only authorized administrators can access the Admin Console (`/admin`).
+
+### 🛡️ 2. Comprehensive Admin Operations Console (`/admin`)
+
+- **User & Access Management**: Search, filter, view all accounts, promote students to administrators, or suspend/delete accounts.
+- **Study Clubs Moderation**: Inspect all active study groups, join codes, and member metrics with disband/moderation capabilities.
+- **Broadcast Announcements**: Post system-wide broadcast alerts and info banners across all student dashboards.
+- **Security Audit Logs**: Track chronological records of logins, credential creations, and platform administrative actions.
+- **Platform Data Export**: Download complete JSON snapshots of platform users, clubs, and tasks.
 
 ### 👥 2. Collaborative Study Clubs
 

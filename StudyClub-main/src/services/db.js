@@ -323,6 +323,16 @@ export const db = {
     return target
   },
 
+  async deleteClub(id) {
+    if (isSupabaseConfigured) {
+      await supabase.from('clubs').delete().eq('id', id)
+    }
+    const clubs = getLocalItem(STORAGE_KEYS.CLUBS, DEFAULT_CLUBS)
+    const updated = clubs.filter(c => c.id !== id)
+    setLocalItem(STORAGE_KEYS.CLUBS, updated)
+    return true
+  },
+
   // ── TASKS ──
   async getTasks() {
     if (isSupabaseConfigured) {

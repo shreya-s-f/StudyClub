@@ -16,7 +16,10 @@ import {
   Bell,
   BookOpen,
   Trophy,
-  Activity
+  Activity,
+  ShieldCheck,
+  Megaphone,
+  X
 } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import { useTheme } from '../../contexts/ThemeContext'
@@ -25,7 +28,7 @@ import { useClub } from '../../contexts/ClubContext'
 import BadgesModal from '../BadgesModal'
 
 export default function AppLayout() {
-  const { user, logout } = useAuth()
+  const { user, logout, announcements } = useAuth()
   const { theme, toggleTheme } = useTheme()
   const { formattedTime, isRunning, toggleTimer, resetTimer, mode } = usePomodoro()
   const { activeClub } = useClub()
@@ -34,11 +37,14 @@ export default function AppLayout() {
   const [showBadgesModal, setShowBadgesModal] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [dismissedAnn, setDismissedAnn] = useState(false)
 
   const handleSignOut = () => {
     logout()
     navigate('/login')
   }
+
+  const activeAnnouncement = announcements?.find(a => a.active)
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-primary)' }}>
@@ -60,18 +66,29 @@ export default function AppLayout() {
               width: 38,
               height: 38,
               borderRadius: 12,
-              background: 'linear-gradient(135deg, var(--accent), #FF8555)',
+              background: user?.role === 'admin'
+                ? 'linear-gradient(135deg, #FF4D4D, #E8521A)'
+                : 'linear-gradient(135deg, var(--accent), #FF8555)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: 'white',
               boxShadow: 'var(--shadow-md)'
             }}>
-              <BookOpen size={22} />
+              {user?.role === 'admin' ? <ShieldCheck size={22} /> : <BookOpen size={22} />}
             </div>
             <div>
               <h2 style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.5px' }}>StudyClub</h2>
-              <span className="badge badge-accent" style={{ fontSize: '0.65rem' }}>PRO</span>
+              <span
+                className="badge"
+                style={{
+                  fontSize: '0.65rem',
+                  background: user?.role === 'admin' ? '#FF4D4D' : 'var(--accent-soft)',
+                  color: user?.role === 'admin' ? '#fff' : 'var(--accent)'
+                }}
+              >
+                {user?.role === 'admin' ? 'ADMIN' : 'PRO'}
+              </span>
             </div>
           </div>
         </div>
@@ -94,17 +111,53 @@ export default function AppLayout() {
             style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }}
           />
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: '0.875rem', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <div style={{ fontSize: '0.875rem', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'flex', alignItems: 'center', gap: 6 }}>
               {user?.name || 'Student'}
             </div>
-            <div style={{ fontSize: '0.725rem', color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              {user?.major || user?.email || 'Student Account'}
+            <div style={{ fontSize: '0.725rem', color: 'var(--accent)', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              @{user?.username || user?.email?.split('@')[0] || 'user'}
+              {user?.role === 'admin' && (
+                <span style={{ color: '#FF4D4D', marginLeft: 4, fontWeight: 800 }}>[ADMIN]</span>
+              )}
             </div>
           </div>
         </div>
 
         {/* Main Navigation Links */}
         <nav style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {/* Admin Portal Nav Item (Prominently displayed for admins) */}
+          {user?.role === 'admin' && (
+            <NavLink
+              to="/admin"
+              style={({ isActive }) => ({
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+                padding: '0.75rem 1rem',
+                borderRadius: 'var(--radius-md)',
+                fontWeight: 700,
+                fontSize: '0.9rem',
+                color: isActive ? 'white' : '#FF4D4D',
+                background: isActive ? '#FF4D4D' : 'rgba(255, 77, 77, 0.08)',
+                border: '1px solid rgba(255, 77, 77, 0.3)'
+              })}
+            >
+              <ShieldCheck size={18} />
+              <span>Admin Console</span>
+              <span
+                className="badge"
+                style={{
+                  marginLeft: 'auto',
+                  background: 'rgba(255,255,255,0.25)',
+                  color: 'inherit',
+                  fontSize: '0.65rem'
+                }}
+              >
+                ADMIN
+              </span>
+            </NavLink>
+          )}
+
           <NavLink
             to="/dashboard"
             style={({ isActive }) => ({
@@ -247,6 +300,27 @@ export default function AppLayout() {
 
           {/* Right Header Widgets */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            {/* Admin Console Shortcut Pill for Admins */}
+            {user?.role === 'admin' && (
+              <NavLink
+                to="/admin"
+                className="btn btn-secondary"
+                style={{
+                  padding: '6px 12px',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  borderColor: '#FF4D4D',
+                  color: '#FF4D4D',
+                  background: 'rgba(255, 77, 77, 0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6
+                }}
+              >
+                <ShieldCheck size={14} /> Admin Console
+              </NavLink>
+            )}
+
             {/* Live Audio Visualizer */}
             {isRunning && (
               <div style={{ display: 'flex', alignItems: 'center', gap: 3, padding: '4px 10px', background: 'var(--accent-soft)', borderRadius: 99 }} title="Focus Audio Visualizer Active">
@@ -349,6 +423,11 @@ export default function AppLayout() {
                     <div style={{ padding: 8, background: 'var(--bg-primary)', borderRadius: 8 }}>
                       🎉 Welcome to StudyClub! Create or join your first study group.
                     </div>
+                    {user?.role === 'admin' && (
+                      <div style={{ padding: 8, background: 'rgba(255, 77, 77, 0.08)', border: '1px solid rgba(255, 77, 77, 0.2)', borderRadius: 8 }}>
+                        🛡️ Administrator session active. You have full system privileges.
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -377,6 +456,48 @@ export default function AppLayout() {
             </button>
           </div>
         </header>
+
+        {/* ── BROADCAST ANNOUNCEMENT BANNER ── */}
+        {activeAnnouncement && !dismissedAnn && (
+          <div
+            style={{
+              padding: '10px 1.5rem',
+              background: activeAnnouncement.type === 'warning'
+                ? '#FFF4E5'
+                : (activeAnnouncement.type === 'success' ? 'var(--accent-2-soft)' : 'var(--accent-soft)'),
+              borderBottom: '1px solid var(--border)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              fontSize: '0.875rem'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1 }}>
+              <Megaphone
+                size={16}
+                color={activeAnnouncement.type === 'warning'
+                  ? '#D97706'
+                  : (activeAnnouncement.type === 'success' ? 'var(--accent-2)' : 'var(--accent)')}
+              />
+              <strong style={{
+                color: activeAnnouncement.type === 'warning'
+                  ? '#D97706'
+                  : (activeAnnouncement.type === 'success' ? 'var(--accent-2)' : 'var(--accent)')
+              }}>
+                {activeAnnouncement.title}:
+              </strong>
+              <span style={{ color: 'var(--text-primary)' }}>{activeAnnouncement.message}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setDismissedAnn(true)}
+              style={{ color: 'var(--text-muted)', cursor: 'pointer', padding: 4 }}
+              title="Dismiss announcement banner"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        )}
 
         {/* Page Content View */}
         <main style={{ flex: 1, padding: '1.75rem', overflowY: 'auto' }}>

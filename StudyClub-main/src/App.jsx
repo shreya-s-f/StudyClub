@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { ClubProvider } from './contexts/ClubContext'
@@ -9,6 +10,7 @@ import DashboardPage from './pages/DashboardPage'
 import StudyClubPage from './pages/StudyClubPage'
 import AIAssistantPage from './pages/AIAssistantPage'
 import PlannerPage from './pages/PlannerPage'
+import AdminPage from './pages/AdminPage'
 import AppLayout from './components/layout/AppLayout'
 
 const ProtectedRoute = ({ children }) => {
@@ -23,17 +25,37 @@ const ProtectedRoute = ({ children }) => {
   return user ? children : <Navigate to="/login" replace />
 }
 
+const AdminRoute = ({ children }) => {
+  const { user, loading } = useAuth()
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'var(--bg-primary)' }}>
+        <div style={{ width: 40, height: 40, border: '3px solid var(--border)', borderTopColor: 'var(--accent)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+      </div>
+    )
+  }
+  if (!user) {
+    return <Navigate to="/login" replace />
+  }
+  if (user.role !== 'admin') {
+    toast.error('Access denied: Administrator privileges required to access the Admin Console.')
+    return <Navigate to="/dashboard" replace />
+  }
+  return children
+}
+
 const AppRoutes = () => {
   const { user } = useAuth()
   return (
     <Routes>
-      <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <LoginPage />} />
-      <Route path="/" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
+      <Route path="/login" element={user ? <Navigate to={user.role === 'admin' ? "/admin" : "/dashboard"} replace /> : <LoginPage />} />
+      <Route path="/" element={<Navigate to={user ? (user.role === 'admin' ? "/admin" : "/dashboard") : "/login"} replace />} />
       <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/clubs" element={<StudyClubPage />} />
         <Route path="/ai" element={<AIAssistantPage />} />
         <Route path="/planner" element={<PlannerPage />} />
+        <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
       </Route>
     </Routes>
   )

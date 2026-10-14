@@ -12,13 +12,25 @@
 
 ## ✨ Features Highlight
 
-### 🔐 1. Complete Authentication System
-- **Sign Up**: Register with Full Name, Email, Password, and Major/Branch (*Computer Science, Quantum Physics, Pre-Med, Engineering, Business*).
-- **Sign In**: Secure credential validation with persistent user session management.
-- **Header Sign Out**: Prominent Sign Out control located in the top-right header bar.
-- **Protected Routes**: Restricts unauthorized access to dashboard and study tools.
+### 🔐 1. Complete Dual-Role Authentication & Admin System
+- **Student & Admin Portals**: Dedicated portals for standard students and privileged platform administrators.
+- **Unique Username Security**: Every user and administrator must register with a verified, unique username (e.g., `@admin_boss`, `@alex_r`). Real-time availability verification prevents collisions.
+- **Admin Passcode Authorization**: Administrator sign-up requires a security authorization passcode (`ADMIN2026`) preventing unauthorized role escalation.
+- **Password Strength & Matching**: Enforces 6+ character minimums and confirmation matching with show/hide password visibility toggles.
+- **Pre-configured Demo Accounts**:
+  - **Super Admin**: Username `superadmin` or `admin@studyclub.edu` | Password: `admin123`
+  - **Student**: Username `alex_r` or `alex@example.com` | Password: `password123`
+- **Header Sign Out & Badges**: Distinct `[ADMIN]` badges on profile avatars and quick navigation shortcuts.
+- **Protected & Admin Routes**: Strict route guards redirect unauthorized attempts away from the `/admin` console.
 
-### 👥 2. Collaborative Study Clubs & Virtual Study Rooms
+### 🛡️ 2. Comprehensive Admin Operations Console (`/admin`)
+- **User & Access Management**: Search, filter, inspect, promote students to admins, suspend accounts, or remove users with safety guards against self-deletion.
+- **Study Clubs Moderation**: View all study clubs, join codes, active member counts, and disband/moderate clubs.
+- **Platform Broadcast Announcements**: Publish real-time alert/info banners that appear on every student's dashboard.
+- **Security Audit Logs**: Chronological log trail recording all logins, role modifications, and administrative actions.
+- **Data Export**: One-click JSON backup export of all users, clubs, tasks, and system logs.
+
+### 👥 3. Collaborative Study Clubs & Virtual Study Rooms
 - **Club Management**: Create new study clubs with auto-generated 6-digit join codes or join existing clubs.
 - **Live Virtual Study Room**: Simulated video/audio participant grid with mute/unmute, camera toggles, and real-time focus status tags (*Studying, Lo-Fi Focus, Break*).
 - **Club Group Chat**: Real-time message board for group discussions and resource sharing.
