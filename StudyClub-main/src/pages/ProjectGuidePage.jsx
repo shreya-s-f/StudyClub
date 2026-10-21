@@ -80,6 +80,27 @@ ${DEMO_CREDENTIALS.map(c => `- **${c.role}**: Username: \`${c.username}\`, Passw
     toast.success('Downloaded StudyClub_Project_Guide.md!')
   }
 
+  const handleDownloadJson = () => {
+    const jsonPayload = {
+      project: PROJECT_METADATA,
+      problem: PROBLEM_STATEMENT,
+      stats: PROJECT_STATS,
+      modules: MODULES_BREAKDOWN,
+      techStack: TECH_STACK_EXPLAINED,
+      demoCredentials: DEMO_CREDENTIALS,
+      faqs: FAQS
+    }
+    const blob = new Blob([JSON.stringify(jsonPayload, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.setAttribute('href', url)
+    link.setAttribute('download', 'StudyClub_Project_Data.json')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    toast.success('Downloaded StudyClub_Project_Data.json!')
+  }
+
   // Filter modules and FAQs by search query
   const queryLower = searchQuery.toLowerCase().trim()
   const filteredModules = MODULES_BREAKDOWN.filter(m =>
@@ -149,10 +170,18 @@ ${DEMO_CREDENTIALS.map(c => `- **${c.role}**: Username: \`${c.username}\`, Passw
               className="btn btn-secondary"
               title="Download clean Markdown summary"
             >
-              <Download size={15} /> Download Guide (.md)
+              <Download size={15} /> Markdown Guide
+            </button>
+            <button
+              type="button"
+              onClick={handleDownloadJson}
+              className="btn btn-secondary"
+              title="Download structured JSON dataset"
+            >
+              <Download size={15} /> Export JSON
             </button>
             <Link to="/clubs" className="btn btn-primary">
-              <Zap size={15} /> Jump to Live App
+              <Zap size={15} /> Open Live App
             </Link>
           </div>
         </div>
