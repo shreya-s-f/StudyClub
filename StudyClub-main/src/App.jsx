@@ -11,6 +11,7 @@ import StudyClubPage from './pages/StudyClubPage'
 import AIAssistantPage from './pages/AIAssistantPage'
 import PlannerPage from './pages/PlannerPage'
 import AdminPage from './pages/AdminPage'
+import ProjectGuidePage from './pages/ProjectGuidePage'
 import AppLayout from './components/layout/AppLayout'
 
 const ProtectedRoute = ({ children }) => {
@@ -50,11 +51,13 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/login" element={user ? <Navigate to={user.role === 'admin' ? "/admin" : "/dashboard"} replace /> : <LoginPage />} />
       <Route path="/" element={<Navigate to={user ? (user.role === 'admin' ? "/admin" : "/dashboard") : "/login"} replace />} />
+      <Route path="/about" element={<ProjectGuidePage />} />
       <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/clubs" element={<StudyClubPage />} />
         <Route path="/ai" element={<AIAssistantPage />} />
         <Route path="/planner" element={<PlannerPage />} />
+        <Route path="/guide" element={<ProjectGuidePage />} />
         <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
       </Route>
     </Routes>
