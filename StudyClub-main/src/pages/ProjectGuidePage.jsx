@@ -351,8 +351,19 @@ ${DEMO_CREDENTIALS.map(c => `- **${c.role}**: Username: \`${c.username}\`, Passw
       {/* 2. CORE MODULES BREAKDOWN */}
       {activeTab === 'modules' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-            Showing <strong>{filteredModules.length}</strong> modules. Each module is designed to solve a specific study challenge.
+          <div className="card" style={{ padding: '1.25rem', background: 'var(--bg-secondary)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+              Showing <strong>{filteredModules.length}</strong> core modules. Click any <strong>"Try It Live"</strong> button to test that module immediately!
+            </div>
+            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+              <span className="badge badge-accent">01 Auth</span>
+              <span className="badge badge-accent">02 Clubs</span>
+              <span className="badge badge-accent">03 AI</span>
+              <span className="badge badge-accent">04 Timer</span>
+              <span className="badge badge-accent">05 Planner</span>
+              <span className="badge badge-accent">06 Badges</span>
+              <span className="badge badge-accent">07 Admin</span>
+            </div>
           </div>
 
           <div style={{ display: 'grid', gap: '1.25rem' }}>
@@ -362,23 +373,24 @@ ${DEMO_CREDENTIALS.map(c => `- **${c.role}**: Username: \`${c.username}\`, Passw
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <div
                       style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: 12,
-                        background: 'var(--accent-soft)',
+                        width: 48,
+                        height: 48,
+                        borderRadius: 14,
+                        background: 'linear-gradient(135deg, var(--accent-soft), var(--bg-secondary))',
+                        border: '1px solid var(--border)',
                         color: 'var(--accent)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontWeight: 800,
-                        fontSize: '1rem'
+                        fontSize: '1.1rem'
                       }}
                     >
                       {m.number}
                     </div>
                     <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <h3 style={{ fontSize: '1.25rem', fontWeight: 800 }}>{m.name}</h3>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                        <h3 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0 }}>{m.name}</h3>
                         <span className="badge badge-accent" style={{ fontSize: '0.7rem' }}>{m.badge}</span>
                       </div>
                       <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: 2 }}>
@@ -387,25 +399,29 @@ ${DEMO_CREDENTIALS.map(c => `- **${c.role}**: Username: \`${c.username}\`, Passw
                     </div>
                   </div>
 
-                  <Link to={m.tryItLink} className="btn btn-secondary" style={{ fontSize: '0.8rem', padding: '6px 12px' }}>
+                  <Link to={m.tryItLink} className="btn btn-primary" style={{ fontSize: '0.8rem', padding: '8px 14px' }}>
                     {m.tryItLabel} <ExternalLink size={13} />
                   </Link>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', background: 'var(--bg-secondary)', padding: '1rem', borderRadius: 'var(--radius-md)' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', background: 'var(--bg-secondary)', padding: '1.1rem', borderRadius: 'var(--radius-md)' }}>
                   <div>
-                    <strong style={{ fontSize: '0.8rem', color: 'var(--accent)', textTransform: 'uppercase' }}>What it does:</strong>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--text-primary)', marginTop: 4 }}>{m.whatItDoes}</p>
+                    <strong style={{ fontSize: '0.8rem', color: 'var(--accent)', textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>
+                      🎯 What it does in simple words:
+                    </strong>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--text-primary)', margin: 0, lineHeight: 1.5 }}>{m.whatItDoes}</p>
                   </div>
                   <div>
-                    <strong style={{ fontSize: '0.8rem', color: 'var(--accent-2)', textTransform: 'uppercase' }}>Why it matters:</strong>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--text-primary)', marginTop: 4 }}>{m.whyItMatters}</p>
+                    <strong style={{ fontSize: '0.8rem', color: 'var(--accent-2)', textTransform: 'uppercase', display: 'block', marginBottom: 4 }}>
+                      💡 Why students love it:
+                    </strong>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--text-primary)', margin: 0, lineHeight: 1.5 }}>{m.whyItMatters}</p>
                   </div>
                 </div>
 
                 <div>
-                  <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: 6, textTransform: 'uppercase' }}>
-                    Key Features in this Module:
+                  <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    Key Capabilities Included:
                   </div>
                   <ul style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '8px 16px', paddingLeft: 18, fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
                     {m.features.map((f, idx) => (
