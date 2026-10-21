@@ -302,6 +302,9 @@ ${DEMO_CREDENTIALS.map(c => `- **${c.role}**: Username: \`${c.username}\`, Passw
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.6 }}>
                 {PROBLEM_STATEMENT.description}
               </p>
+              <div style={{ marginTop: 14, padding: 12, background: 'rgba(230, 57, 70, 0.06)', borderRadius: 8, fontSize: '0.8rem', color: '#B7094C' }}>
+                ⚡ <strong>Result:</strong> Constant tab switching wastes up to 30 minutes every study session.
+              </div>
             </div>
 
             <div className="card" style={{ padding: '1.75rem', borderLeft: '4px solid var(--accent-2)' }}>
@@ -312,6 +315,34 @@ ${DEMO_CREDENTIALS.map(c => `- **${c.role}**: Username: \`${c.username}\`, Passw
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.6 }}>
                 {PROBLEM_STATEMENT.solution}
               </p>
+              <div style={{ marginTop: 14, padding: 12, background: 'var(--accent-2-soft)', borderRadius: 8, fontSize: '0.8rem', color: 'var(--accent-2)' }}>
+                ✨ <strong>Result:</strong> Study sessions are uninterrupted, collaborative, and rewarding.
+              </div>
+            </div>
+          </div>
+
+          {/* Who is StudyClub for? */}
+          <div className="card" style={{ padding: '1.75rem' }}>
+            <h3 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: 12 }}>Who Benefits Most from StudyClub?</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
+              <div style={{ padding: '1rem', background: 'var(--bg-secondary)', borderRadius: 12 }}>
+                <div style={{ fontWeight: 700, fontSize: '0.95rem', marginBottom: 4 }}>🎓 College & High School Students</div>
+                <div style={{ fontSize: '0.825rem', color: 'var(--text-secondary)' }}>
+                  Organize midterms, study for MCAT/Engineering exams, and study with classmates in virtual rooms.
+                </div>
+              </div>
+              <div style={{ padding: '1rem', background: 'var(--bg-secondary)', borderRadius: 12 }}>
+                <div style={{ fontWeight: 700, fontSize: '0.95rem', marginBottom: 4 }}>💻 Self-Learners & Coders</div>
+                <div style={{ fontSize: '0.825rem', color: 'var(--text-secondary)' }}>
+                  Track daily Pomodoro streaks, generate AI quizzes on Python or algorithms, and keep study notes organized.
+                </div>
+              </div>
+              <div style={{ padding: '1rem', background: 'var(--bg-secondary)', borderRadius: 12 }}>
+                <div style={{ fontWeight: 700, fontSize: '0.95rem', marginBottom: 4 }}>🛡️ Educators & Study Club Leads</div>
+                <div style={{ fontSize: '0.825rem', color: 'var(--text-secondary)' }}>
+                  Create official study circles, broadcast platform announcements, and moderate student activities.
+                </div>
+              </div>
             </div>
           </div>
         </div>
