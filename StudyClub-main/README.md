@@ -1,5 +1,7 @@
 # 📚 StudyClub — Collaborative Learning & Productivity Platform
 
+> 📖 **Project Documentation:** Explore the full [Project Overview Guide (PROJECT_OVERVIEW.md)](../PROJECT_OVERVIEW.md) or open the interactive **Project Guide** inside the web app at `/guide`.
+
 [![React](https://img.shields.io/badge/React-18.2.0-61DAFB?logo=react&logoColor=black)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-5.0-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com/)

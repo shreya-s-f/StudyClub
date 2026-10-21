@@ -2,6 +2,8 @@
 
 **Learn together. Stay focused. Achieve more.**
 
+> 📖 **New to the project?** Read our [Complete Project Overview (PROJECT_OVERVIEW.md)](PROJECT_OVERVIEW.md) for an in-depth, simple English breakdown of all 7 modules, technical architecture, and FAQs! You can also explore the interactive **Project Guide** directly inside the running application at `/guide`.
+
 StudyClub is a web-based learning and productivity platform designed to help students study efficiently, collaborate with friends, organize academic tasks, and use AI-powered tools to make learning easier.
 
 It combines virtual study clubs, an AI study assistant, a Pomodoro timer, a task planner, a calendar, and digital notes in one application.
