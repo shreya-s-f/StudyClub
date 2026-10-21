@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import toast from 'react-hot-toast'
@@ -28,6 +29,13 @@ const ProtectedRoute = ({ children }) => {
 
 const AdminRoute = ({ children }) => {
   const { user, loading } = useAuth()
+
+  useEffect(() => {
+    if (!loading && user && user.role !== 'admin') {
+      toast.error('Access denied: Administrator privileges required to access the Admin Console.')
+    }
+  }, [user, loading])
+
   if (loading) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'var(--bg-primary)' }}>
@@ -39,14 +47,22 @@ const AdminRoute = ({ children }) => {
     return <Navigate to="/login" replace />
   }
   if (user.role !== 'admin') {
-    toast.error('Access denied: Administrator privileges required to access the Admin Console.')
     return <Navigate to="/dashboard" replace />
   }
   return children
 }
 
 const AppRoutes = () => {
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'var(--bg-primary)' }}>
+        <div style={{ width: 40, height: 40, border: '3px solid var(--border)', borderTopColor: 'var(--accent)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+      </div>
+    )
+  }
+
   return (
     <Routes>
       <Route path="/login" element={user ? <Navigate to={user.role === 'admin' ? "/admin" : "/dashboard"} replace /> : <LoginPage />} />
@@ -60,6 +76,8 @@ const AppRoutes = () => {
         <Route path="/guide" element={<ProjectGuidePage />} />
         <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
       </Route>
+      {/* Catch-all fallback route to prevent blank page on unknown paths */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
 }
