@@ -214,6 +214,44 @@ export default function DashboardPage() {
         <button type="button" onClick={() => navigate('/clubs')} className="btn btn-secondary">
           <Users size={16} /> Join Study Club
         </button>
+        <button type="button" onClick={() => navigate('/guide')} className="btn btn-secondary">
+          <BookOpen size={16} color="var(--accent)" /> Project Guide
+        </button>
+      </div>
+
+      {/* ── PROJECT GUIDE DISCOVERY CARD ── */}
+      <div
+        className="card"
+        style={{
+          padding: '1.25rem 1.75rem',
+          background: 'linear-gradient(135deg, rgba(74, 58, 255, 0.06) 0%, rgba(232, 82, 26, 0.06) 100%)',
+          border: '1px solid var(--border)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: 12
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <div style={{ width: 42, height: 42, borderRadius: 12, background: 'var(--accent-3-soft)', color: 'var(--accent-3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <BookOpen size={22} />
+          </div>
+          <div>
+            <div style={{ fontWeight: 800, fontSize: '0.95rem' }}>Want to understand how StudyClub works?</div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+              Read the complete 7-module project walkthrough written in simple, friendly English.
+            </div>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={() => navigate('/guide')}
+          className="btn btn-secondary"
+          style={{ fontSize: '0.825rem', padding: '8px 16px' }}
+        >
+          Explore Project Guide <ArrowRight size={14} />
+        </button>
       </div>
 
       {/* ── MAIN CONTENT GRID ── */}
