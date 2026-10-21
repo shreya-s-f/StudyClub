@@ -554,6 +554,33 @@ ${DEMO_CREDENTIALS.map(c => `- **${c.role}**: Username: \`${c.username}\`, Passw
               </div>
             ))}
           </div>
+
+          {/* Quick Evaluator / Grader Checklist */}
+          <div className="card" style={{ padding: '1.75rem', border: '1px solid var(--accent)', background: 'var(--accent-soft)' }}>
+            <h4 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--accent)', marginBottom: 8 }}>
+              📋 2-Minute Feature Testing Checklist (For Teachers & Evaluators)
+            </h4>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '10px', fontSize: '0.85rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Check size={16} color="var(--accent)" /> <span>Sign in with 1-click Demo Admin</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Check size={16} color="var(--accent)" /> <span>Visit the Admin Console at /admin</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Check size={16} color="var(--accent)" /> <span>Post a platform broadcast alert</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Check size={16} color="var(--accent)" /> <span>Start the Pomodoro timer in header</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Check size={16} color="var(--accent)" /> <span>Generate a 3D flashcard deck</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Check size={16} color="var(--accent)" /> <span>Try creating/joining a study club</span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
