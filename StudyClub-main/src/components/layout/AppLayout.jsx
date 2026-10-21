@@ -230,6 +230,36 @@ export default function AppLayout() {
             Planner & Tasks
           </NavLink>
 
+          <NavLink
+            to="/guide"
+            style={({ isActive }) => ({
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              padding: '0.75rem 1rem',
+              borderRadius: 'var(--radius-md)',
+              fontWeight: 600,
+              fontSize: '0.9rem',
+              color: isActive ? 'white' : 'var(--text-primary)',
+              background: isActive ? 'var(--accent)' : 'transparent'
+            })}
+          >
+            <BookOpen size={18} />
+            <span>Project Guide</span>
+            <span
+              className="badge"
+              style={{
+                marginLeft: 'auto',
+                background: isActive ? 'rgba(255,255,255,0.25)' : 'var(--accent-soft)',
+                color: isActive ? 'white' : 'var(--accent)',
+                fontSize: '0.65rem',
+                fontWeight: 800
+              }}
+            >
+              INFO
+            </span>
+          </NavLink>
+
           <button
             type="button"
             onClick={() => setShowBadgesModal(true)}
