@@ -587,41 +587,68 @@ ${DEMO_CREDENTIALS.map(c => `- **${c.role}**: Username: \`${c.username}\`, Passw
       {/* 5. FAQ */}
       {activeTab === 'faq' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div className="card" style={{ padding: '1.5rem' }}>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: 4 }}>Frequently Asked Questions</h3>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
-              Quick answers to everything you or an evaluator might ask about StudyClub.
-            </p>
+          <div className="card" style={{ padding: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 10 }}>
+            <div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0 }}>Frequently Asked Questions</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', margin: '4px 0 0' }}>
+                Quick answers to everything you or an evaluator might ask about StudyClub.
+              </p>
+            </div>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button
+                type="button"
+                onClick={() => setOpenFaqIndex('all')}
+                className="btn btn-secondary"
+                style={{ fontSize: '0.75rem', padding: '6px 10px' }}
+              >
+                Expand All
+              </button>
+              <button
+                type="button"
+                onClick={() => setOpenFaqIndex(null)}
+                className="btn btn-secondary"
+                style={{ fontSize: '0.75rem', padding: '6px 10px' }}
+              >
+                Collapse All
+              </button>
+            </div>
           </div>
 
           <div style={{ display: 'grid', gap: 10 }}>
-            {filteredFaqs.map((faq, idx) => {
-              const isOpen = openFaqIndex === idx
-              return (
-                <div
-                  key={idx}
-                  className="card"
-                  style={{
-                    padding: '1.25rem',
-                    cursor: 'pointer',
-                    transition: 'all var(--transition)'
-                  }}
-                  onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: 0 }}>
-                      {faq.question}
-                    </h4>
-                    {isOpen ? <ChevronUp size={18} color="var(--accent)" /> : <ChevronDown size={18} color="var(--text-muted)" />}
-                  </div>
-                  {isOpen && (
-                    <div style={{ marginTop: 10, fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6, borderTop: '1px solid var(--border)', paddingTop: 10 }}>
-                      {faq.answer}
+            {filteredFaqs.length === 0 ? (
+              <div className="card" style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                No questions matched "{searchQuery}". Try searching for words like "admin", "timer", or "database".
+              </div>
+            ) : (
+              filteredFaqs.map((faq, idx) => {
+                const isOpen = openFaqIndex === 'all' || openFaqIndex === idx
+                return (
+                  <div
+                    key={idx}
+                    className="card"
+                    style={{
+                      padding: '1.25rem',
+                      cursor: 'pointer',
+                      transition: 'all var(--transition)'
+                    }}
+                    onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+                      <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <span style={{ color: 'var(--accent)', fontWeight: 800 }}>Q:</span> {faq.question}
+                      </h4>
+                      {isOpen ? <ChevronUp size={18} color="var(--accent)" /> : <ChevronDown size={18} color="var(--text-muted)" />}
                     </div>
-                  )}
-                </div>
-              )
-            })}
+                    {isOpen && (
+                      <div style={{ marginTop: 10, fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6, borderTop: '1px solid var(--border)', paddingTop: 10 }}>
+                        <strong style={{ color: 'var(--accent-2)' }}>Answer: </strong>
+                        {faq.answer}
+                      </div>
+                    )}
+                  </div>
+                )
+              })
+            )}
           </div>
         </div>
       )}
