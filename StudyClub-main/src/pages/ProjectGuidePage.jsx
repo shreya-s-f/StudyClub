@@ -438,11 +438,49 @@ ${DEMO_CREDENTIALS.map(c => `- **${c.role}**: Username: \`${c.username}\`, Passw
       {/* 3. TECH & ARCHITECTURE */}
       {activeTab === 'architecture' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          <div className="card" style={{ padding: '1.5rem' }}>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: 6 }}>How StudyClub is Built (Plain English)</h3>
+          <div className="card" style={{ padding: '1.75rem' }}>
+            <h3 style={{ fontSize: '1.3rem', fontWeight: 800, marginBottom: 6 }}>How StudyClub is Built (Plain English)</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
               No confusing technical jargon. Here is how the software works behind the scenes in simple, accessible language.
             </p>
+
+            {/* Architecture Diagram in Simple English */}
+            <div style={{ marginTop: '1.25rem', padding: '1.25rem', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+              <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: 8 }}>
+                Visual Data Flow:
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, textAlign: 'center' }}>
+                <div style={{ flex: 1, minWidth: 140, padding: 12, background: 'var(--bg-card)', borderRadius: 10, border: '1px solid var(--border)' }}>
+                  <div style={{ fontSize: '1.25rem' }}>💻</div>
+                  <strong style={{ fontSize: '0.85rem' }}>1. User Interface</strong>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>React 18 + Vite SPA</div>
+                </div>
+
+                <div style={{ color: 'var(--text-muted)', fontWeight: 800 }}>➔</div>
+
+                <div style={{ flex: 1, minWidth: 140, padding: 12, background: 'var(--bg-card)', borderRadius: 10, border: '1px solid var(--border)' }}>
+                  <div style={{ fontSize: '1.25rem' }}>🧠</div>
+                  <strong style={{ fontSize: '0.85rem' }}>2. Global State</strong>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Auth & Club Contexts</div>
+                </div>
+
+                <div style={{ color: 'var(--text-muted)', fontWeight: 800 }}>➔</div>
+
+                <div style={{ flex: 1, minWidth: 140, padding: 12, background: 'var(--bg-card)', borderRadius: 10, border: '1px solid var(--border)' }}>
+                  <div style={{ fontSize: '1.25rem' }}>🗄️</div>
+                  <strong style={{ fontSize: '0.85rem' }}>3. Hybrid Storage</strong>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Supabase + LocalStorage</div>
+                </div>
+
+                <div style={{ color: 'var(--text-muted)', fontWeight: 800 }}>➔</div>
+
+                <div style={{ flex: 1, minWidth: 140, padding: 12, background: 'var(--bg-card)', borderRadius: 10, border: '1px solid var(--border)' }}>
+                  <div style={{ fontSize: '1.25rem' }}>🤖</div>
+                  <strong style={{ fontSize: '0.85rem' }}>4. AI Service</strong>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Gemini + Local Engine</div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.25rem' }}>
