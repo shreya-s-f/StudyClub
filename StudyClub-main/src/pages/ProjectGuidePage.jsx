@@ -40,11 +40,39 @@ export default function ProjectGuidePage() {
   const [openFaqIndex, setOpenFaqIndex] = useState(null)
   const [copiedKey, setCopiedKey] = useState('')
 
+  const fallbackCopy = (text, key) => {
+    try {
+      const textArea = document.createElement('textarea')
+      textArea.value = text
+      textArea.style.position = 'fixed'
+      textArea.style.opacity = '0'
+      document.body.appendChild(textArea)
+      textArea.focus()
+      textArea.select()
+      document.execCommand('copy')
+      document.body.removeChild(textArea)
+      setCopiedKey(key)
+      toast.success(`Copied "${text}" to clipboard!`)
+      setTimeout(() => setCopiedKey(''), 2000)
+    } catch {
+      toast.error('Unable to copy text')
+    }
+  }
+
   const handleCopy = (text, key) => {
-    navigator.clipboard.writeText(text)
-    setCopiedKey(key)
-    toast.success(`Copied "${text}" to clipboard!`)
-    setTimeout(() => setCopiedKey(''), 2000)
+    try {
+      if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          setCopiedKey(key)
+          toast.success(`Copied "${text}" to clipboard!`)
+          setTimeout(() => setCopiedKey(''), 2000)
+        }).catch(() => fallbackCopy(text, key))
+      } else {
+        fallbackCopy(text, key)
+      }
+    } catch {
+      fallbackCopy(text, key)
+    }
   }
 
   const handleDownloadSummary = () => {
@@ -101,20 +129,20 @@ ${DEMO_CREDENTIALS.map(c => `- **${c.role}**: Username: \`${c.username}\`, Passw
     toast.success('Downloaded StudyClub_Project_Data.json!')
   }
 
-  // Filter modules and FAQs by search query
-  const queryLower = searchQuery.toLowerCase().trim()
-  const filteredModules = MODULES_BREAKDOWN.filter(m =>
+  // Filter modules and FAQs safely by search query
+  const queryLower = (searchQuery || '').toLowerCase().trim()
+  const filteredModules = (MODULES_BREAKDOWN || []).filter(m =>
     !queryLower ||
-    m.name.toLowerCase().includes(queryLower) ||
-    m.shortSummary.toLowerCase().includes(queryLower) ||
-    m.whatItDoes.toLowerCase().includes(queryLower) ||
-    m.features.some(f => f.toLowerCase().includes(queryLower))
+    (m.name || '').toLowerCase().includes(queryLower) ||
+    (m.shortSummary || '').toLowerCase().includes(queryLower) ||
+    (m.whatItDoes || '').toLowerCase().includes(queryLower) ||
+    (Array.isArray(m.features) && m.features.some(f => (f || '').toLowerCase().includes(queryLower)))
   )
 
-  const filteredFaqs = FAQS.filter(faq =>
+  const filteredFaqs = (FAQS || []).filter(faq =>
     !queryLower ||
-    faq.question.toLowerCase().includes(queryLower) ||
-    faq.answer.toLowerCase().includes(queryLower)
+    (faq.question || '').toLowerCase().includes(queryLower) ||
+    (faq.answer || '').toLowerCase().includes(queryLower)
   )
 
   return (
