@@ -330,6 +330,24 @@ export default function AppLayout() {
 
           {/* Right Header Widgets */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            {/* Project Guide Quick Pill */}
+            <NavLink
+              to="/guide"
+              className="btn btn-secondary"
+              style={{
+                padding: '6px 12px',
+                fontSize: '0.78rem',
+                fontWeight: 700,
+                borderColor: 'var(--border-strong)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6
+              }}
+              title="Open Project Guide & Documentation in Simple English"
+            >
+              <BookOpen size={14} color="var(--accent)" /> Project Guide
+            </NavLink>
+
             {/* Admin Console Shortcut Pill for Admins */}
             {user?.role === 'admin' && (
               <NavLink
