@@ -244,20 +244,24 @@ export default function AppLayout() {
               background: isActive ? 'var(--accent)' : 'transparent'
             })}
           >
-            <BookOpen size={18} />
-            <span>Project Guide</span>
-            <span
-              className="badge"
-              style={{
-                marginLeft: 'auto',
-                background: isActive ? 'rgba(255,255,255,0.25)' : 'var(--accent-soft)',
-                color: isActive ? 'white' : 'var(--accent)',
-                fontSize: '0.65rem',
-                fontWeight: 800
-              }}
-            >
-              INFO
-            </span>
+            {({ isActive }) => (
+              <>
+                <BookOpen size={18} />
+                <span>Project Guide</span>
+                <span
+                  className="badge"
+                  style={{
+                    marginLeft: 'auto',
+                    background: isActive ? 'rgba(255,255,255,0.25)' : 'var(--accent-soft)',
+                    color: isActive ? 'white' : 'var(--accent)',
+                    fontSize: '0.65rem',
+                    fontWeight: 800
+                  }}
+                >
+                  INFO
+                </span>
+              </>
+            )}
           </NavLink>
 
           <button
