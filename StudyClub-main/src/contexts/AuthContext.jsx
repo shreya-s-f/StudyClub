@@ -98,16 +98,41 @@ const DEFAULT_AUDIT_LOGS = [
   }
 ]
 
+// Safe LocalStorage wrapper preventing unhandled browser storage errors
+const safeStorage = {
+  getItem: (key) => {
+    try {
+      return typeof window !== 'undefined' && window.localStorage ? window.localStorage.getItem(key) : null
+    } catch (e) {
+      return null
+    }
+  },
+  setItem: (key, val) => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(key, val)
+      }
+    } catch (e) {}
+  },
+  removeItem: (key) => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.removeItem(key)
+      }
+    } catch (e) {}
+  }
+}
+
 function getRegisteredUsers() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEYS.USERS)
+    const raw = safeStorage.getItem(STORAGE_KEYS.USERS)
     if (!raw) {
-      localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(DEFAULT_USERS))
+      safeStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(DEFAULT_USERS))
       return DEFAULT_USERS
     }
     const parsed = JSON.parse(raw)
     if (!Array.isArray(parsed) || parsed.length === 0) {
-      localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(DEFAULT_USERS))
+      safeStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(DEFAULT_USERS))
       return DEFAULT_USERS
     }
     return parsed
@@ -118,7 +143,7 @@ function getRegisteredUsers() {
 
 function saveRegisteredUsers(users) {
   try {
-    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users))
+    safeStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users))
   } catch (err) {
     console.error('Failed to save users:', err)
   }
@@ -129,7 +154,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
   const [announcements, setAnnouncements] = useState(() => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEYS.ANNOUNCEMENTS)
+      const raw = safeStorage.getItem(STORAGE_KEYS.ANNOUNCEMENTS)
       return raw ? JSON.parse(raw) : DEFAULT_ANNOUNCEMENTS
     } catch {
       return DEFAULT_ANNOUNCEMENTS
@@ -137,7 +162,7 @@ export function AuthProvider({ children }) {
   })
   const [auditLogs, setAuditLogs] = useState(() => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEYS.AUDIT_LOGS)
+      const raw = safeStorage.getItem(STORAGE_KEYS.AUDIT_LOGS)
       return raw ? JSON.parse(raw) : DEFAULT_AUDIT_LOGS
     } catch {
       return DEFAULT_AUDIT_LOGS
@@ -145,30 +170,36 @@ export function AuthProvider({ children }) {
   })
 
   useEffect(() => {
-    // Ensure default users are initialized
-    getRegisteredUsers()
+    try {
+      // Ensure default users are initialized
+      getRegisteredUsers()
 
-    const stored = localStorage.getItem(STORAGE_KEYS.CURRENT_USER)
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored)
-        // Verify user still exists in registered database
-        const users = getRegisteredUsers()
-        const currentInDb = users.find(u => u.id === parsed.id)
-        if (currentInDb) {
-          const { password: _, ...cleanUser } = currentInDb
-          setUser(cleanUser)
-        } else {
-          setUser(parsed)
+      const stored = safeStorage.getItem(STORAGE_KEYS.CURRENT_USER)
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored)
+          // Verify user still exists in registered database
+          const users = getRegisteredUsers()
+          const currentInDb = users.find(u => u.id === parsed.id)
+          if (currentInDb) {
+            const { password: _, ...cleanUser } = currentInDb
+            setUser(cleanUser)
+          } else {
+            setUser(parsed)
+          }
+        } catch (error) {
+          safeStorage.removeItem(STORAGE_KEYS.CURRENT_USER)
+          setUser(null)
         }
-      } catch (error) {
-        localStorage.removeItem(STORAGE_KEYS.CURRENT_USER)
+      } else {
         setUser(null)
       }
-    } else {
+    } catch (e) {
+      console.warn('Auth initialization warning:', e)
       setUser(null)
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }, [])
 
   const hasRegisteredUsers = () => {
@@ -292,7 +323,7 @@ export function AuthProvider({ children }) {
     )
 
     setUser(newUser)
-    localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(newUser))
+    safeStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(newUser))
     return newUser
   }
 
@@ -326,7 +357,7 @@ export function AuthProvider({ children }) {
 
     const { password: _, ...userNoPass } = found
     setUser(userNoPass)
-    localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(userNoPass))
+    safeStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(userNoPass))
 
     logAudit('User Sign In', `${found.name} (@${found.username || 'user'}) signed in successfully.`, found.username)
     return userNoPass
@@ -337,14 +368,14 @@ export function AuthProvider({ children }) {
       logAudit('User Sign Out', `${user.name} (@${user.username || 'user'}) signed out.`, user.username)
     }
     setUser(null)
-    localStorage.removeItem(STORAGE_KEYS.CURRENT_USER)
+    safeStorage.removeItem(STORAGE_KEYS.CURRENT_USER)
   }
 
   const updateUserProfile = (updates) => {
     setUser(prev => {
       if (!prev) return null
       const updated = { ...prev, ...updates }
-      localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(updated))
+      safeStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(updated))
 
       // Also update in registered list
       const users = getRegisteredUsers()
