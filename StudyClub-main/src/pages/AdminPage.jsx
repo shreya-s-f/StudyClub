@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import {
   ShieldCheck,
   Users,
@@ -352,6 +353,13 @@ export default function AdminPage() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+          <Link
+            to="/guide"
+            className="btn btn-secondary"
+            title="Read Complete Project Documentation"
+          >
+            <BookOpen size={15} color="var(--accent)" /> Project Guide
+          </Link>
           <button
             type="button"
             onClick={loadPlatformData}
