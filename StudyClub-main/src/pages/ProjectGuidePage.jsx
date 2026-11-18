@@ -32,6 +32,7 @@ import {
   DEMO_CREDENTIALS,
   FAQS
 } from '../data/projectGuideData'
+import activeClubPreviewImg from '../assets/active-club-preview.png'
 import toast from 'react-hot-toast'
 
 export default function ProjectGuidePage() {
@@ -146,93 +147,184 @@ ${DEMO_CREDENTIALS.map(c => `- **${c.role}**: Username: \`${c.username}\`, Passw
   )
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem', maxWidth: 1200, margin: '0 auto', width: '100%' }}>
-      {/* ── HERO HEADER ── */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem', width: '100%', maxWidth: '100%' }}>
+      {/* ── HERO HEADER WITH ACTIVE CLUB SPOTLIGHT ── */}
       <div
         className="card"
         style={{
-          padding: '2.25rem',
+          padding: '2rem 2.25rem',
           background: 'linear-gradient(135deg, rgba(232, 82, 26, 0.08) 0%, rgba(74, 58, 255, 0.08) 100%)',
           border: '1px solid var(--border)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '1.25rem'
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 1fr) auto',
+          gap: '2rem',
+          alignItems: 'center'
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-            <div
-              style={{
-                width: 58,
-                height: 58,
-                borderRadius: 16,
-                background: 'linear-gradient(135deg, var(--accent), #FF8555)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                boxShadow: 'var(--shadow-md)'
-              }}
-            >
-              <BookOpen size={30} />
-            </div>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                <span className="badge badge-accent" style={{ fontWeight: 800 }}>PROJECT GUIDE</span>
-                <span className="badge badge-purple" style={{ fontWeight: 700 }}>Version {PROJECT_METADATA.version}</span>
-                <span className="badge badge-green">Simple English Documentation</span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+              <div
+                style={{
+                  width: 58,
+                  height: 58,
+                  borderRadius: 16,
+                  background: 'linear-gradient(135deg, var(--accent), #FF8555)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'white',
+                  boxShadow: 'var(--shadow-md)',
+                  flexShrink: 0
+                }}
+              >
+                <BookOpen size={30} />
               </div>
-              <h1 style={{ fontSize: '2rem', fontWeight: 800, margin: 0, letterSpacing: '-0.5px' }}>
-                StudyClub — Complete Project Knowledge Base
-              </h1>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginTop: 4, maxWidth: 680 }}>
-                {PROJECT_METADATA.summary}
-              </p>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
+                  <span className="badge badge-accent" style={{ fontWeight: 800 }}>PROJECT GUIDE</span>
+                  <span className="badge badge-purple" style={{ fontWeight: 700 }}>Version {PROJECT_METADATA.version}</span>
+                  <span className="badge badge-green">Simple English Documentation</span>
+                  <span className="badge" style={{ background: 'rgba(232, 82, 26, 0.15)', color: 'var(--accent)', fontWeight: 700 }}>Full Screen Layout</span>
+                </div>
+                <h1 style={{ fontSize: '2.1rem', fontWeight: 800, margin: 0, letterSpacing: '-0.5px' }}>
+                  StudyClub — Complete Project Knowledge Base
+                </h1>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginTop: 4, maxWidth: 780 }}>
+                  {PROJECT_METADATA.summary}
+                </p>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={handleDownloadSummary}
+                className="btn btn-secondary"
+                title="Download clean Markdown summary"
+              >
+                <Download size={15} /> Markdown Guide
+              </button>
+              <button
+                type="button"
+                onClick={handleDownloadJson}
+                className="btn btn-secondary"
+                title="Download structured JSON dataset"
+              >
+                <Download size={15} /> Export JSON
+              </button>
+              <Link to="/clubs" className="btn btn-primary">
+                <Zap size={15} /> Open Live App
+              </Link>
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <button
-              type="button"
-              onClick={handleDownloadSummary}
-              className="btn btn-secondary"
-              title="Download clean Markdown summary"
-            >
-              <Download size={15} /> Markdown Guide
-            </button>
-            <button
-              type="button"
-              onClick={handleDownloadJson}
-              className="btn btn-secondary"
-              title="Download structured JSON dataset"
-            >
-              <Download size={15} /> Export JSON
-            </button>
-            <Link to="/clubs" className="btn btn-primary">
-              <Zap size={15} /> Open Live App
-            </Link>
+          {/* Search Bar Across Entire Project */}
+          <div style={{ position: 'relative', width: '100%' }}>
+            <Search size={18} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+            <input
+              className="input"
+              style={{ paddingLeft: 42, height: 46, fontSize: '0.95rem' }}
+              placeholder="Search anything about StudyClub (e.g. 'admin passcode', 'virtual rooms', 'pomodoro', 'how to join club')..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }}
+              >
+                Clear
+              </button>
+            )}
           </div>
         </div>
 
-        {/* Search Bar Across Entire Project */}
-        <div style={{ position: 'relative', width: '100%' }}>
-          <Search size={18} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-          <input
-            className="input"
-            style={{ paddingLeft: 42, height: 46, fontSize: '0.95rem' }}
-            placeholder="Search anything about StudyClub (e.g. 'admin passcode', 'virtual rooms', 'pomodoro', 'how to join club')..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+        {/* ── PHOTO ATTACHED SIDEBAR SPOTLIGHT ── */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '1.25rem',
+            background: 'var(--bg-card)',
+            border: '1px solid var(--border)',
+            borderRadius: '20px',
+            boxShadow: 'var(--shadow-lg)',
+            maxWidth: 320,
+            width: '100%',
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: 4,
+              background: 'linear-gradient(90deg, #E8521A, #FF8555, #4A3AFF)'
+            }}
           />
-          {searchQuery && (
-            <button
-              type="button"
-              onClick={() => setSearchQuery('')}
-              style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }}
-            >
-              Clear
-            </button>
-          )}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', marginBottom: 12 }}>
+            <span
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                background: '#10B981',
+                boxShadow: '0 0 8px #10B981',
+                display: 'inline-block'
+              }}
+            />
+            <span style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.8px', color: 'var(--text-muted)' }}>
+              LIVE SPOTLIGHT
+            </span>
+            <span className="badge badge-accent" style={{ marginLeft: 'auto', fontSize: '0.65rem', fontWeight: 800 }}>
+              ACTIVE CLUB
+            </span>
+          </div>
+
+          <div
+            style={{
+              width: '100%',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              border: '1px solid rgba(232, 82, 26, 0.2)',
+              background: '#FFF5F0',
+              boxShadow: '0 8px 20px -4px rgba(232, 82, 26, 0.15)',
+              transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <img
+              src={activeClubPreviewImg}
+              alt="Active Club — Quantum Physics Guild"
+              style={{
+                width: '100%',
+                height: 'auto',
+                display: 'block',
+                objectFit: 'contain'
+              }}
+            />
+          </div>
+
+          <div style={{ width: '100%', marginTop: 12, display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--text-primary)' }}>Quantum Physics Guild</span>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent)', fontFamily: 'monospace', background: 'var(--accent-soft)', padding: '2px 6px', borderRadius: 4 }}>
+                QUANTUM42
+              </span>
+            </div>
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.4 }}>
+              Example active study club banner shown throughout student study sessions.
+            </p>
+          </div>
         </div>
       </div>
 

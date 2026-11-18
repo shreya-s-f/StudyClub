@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard,
   Users,
@@ -33,6 +33,8 @@ export default function AppLayout() {
   const { formattedTime, isRunning, toggleTimer, resetTimer, mode } = usePomodoro()
   const { activeClub } = useClub()
   const navigate = useNavigate()
+  const location = useLocation()
+  const isGuidePage = location.pathname === '/guide'
 
   const [showBadgesModal, setShowBadgesModal] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
@@ -552,7 +554,7 @@ export default function AppLayout() {
         )}
 
         {/* Page Content View */}
-        <main style={{ flex: 1, padding: '1.75rem', overflowY: 'auto' }}>
+        <main style={{ flex: 1, padding: isGuidePage ? '1rem 1.5rem' : '1.75rem', overflowY: 'auto' }}>
           <Outlet />
         </main>
       </div>
